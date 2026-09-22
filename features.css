@@ -1,0 +1,63 @@
+.features {
+    padding: 80px 0;
+    background-color: var(--color-bg-light);
+}
+
+.features__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.features__image img {
+    max-width: 508.12px;
+    animation: floatImage 4s ease-in-out infinite;
+}
+
+.features__content {
+    max-width: 430px;
+}
+
+.features__title {
+    font-size: 35px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    
+}
+
+.features__desc {
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.features__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.features__item:before {
+    content: "";
+    display: block;
+    width: 24px; 
+    height: 24px; 
+    background-image: url('images/Green_tick.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 15px; 
+    flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+    .features__container { flex-direction: column; align-items: center; text-align: center; gap: 40px; }
+    .features__content { display: flex; flex-direction: column; align-items: center; }
+    .features__item { text-align: left; width: fit-content; }
+}
+@media (max-width: 768px) {
+    .features__image img { max-width: 100%; }
+}
+@media (max-width: 320px) {
+    .features__title { font-size: 24px; }
+}

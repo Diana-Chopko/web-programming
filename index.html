@@ -17,18 +17,27 @@
             <div class="header__logo">
                 <img src="images/Logo.png" alt="LaslesVPN Logo">
             </div>
-            <nav class="header__nav">
-                <ul class="header__menu">
-                    <li class="header__item"><a href="#" class="header__link">About</a></li>
-                    <li class="header__item"><a href="#" class="header__link">Features</a></li>
-                    <li class="header__item"><a href="#" class="header__link">Pricing</a></li>
-                    <li class="header__item"><a href="#" class="header__link">Testimonials</a></li>
-                    <li class="header__item"><a href="#" class="header__link">Help</a></li>
-                </ul>
-            </nav>
-            <div class="header__aut">
-                <a href="#" class="header__signin">Sign In</a>
-                <a href="#" class="btn btn--outline header__signup">Sign Up</a>
+
+            <button class="header__hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="header__menu-wrapper" id="nav-menu">
+                <nav class="header__nav">
+                    <ul class="header__menu">
+                        <li class="header__item"><a href="#" class="header__link">About</a></li>
+                        <li class="header__item"><a href="#" class="header__link">Features</a></li>
+                        <li class="header__item"><a href="#" class="header__link">Pricing</a></li>
+                        <li class="header__item"><a href="#" class="header__link">Testimonials</a></li>
+                        <li class="header__item"><a href="#" class="header__link">Help</a></li>
+                    </ul>
+                </nav>
+                <div class="header__auth">
+                    <a href="#" class="header__signin">Sign In</a>
+                    <a href="#" class="btn btn--outline header__signup">Sign Up</a>
+                </div>
             </div>
         </div>
     </header>
@@ -162,6 +171,17 @@
             </div>
         </div>
     </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
 
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('is-active');
+            });
+        });
+    </script>
 </body>
 </html>
