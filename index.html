@@ -1,187 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaslesVPN Landing Page</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>My Cars App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header class="header">
-        <div class="container header__container">
-            <div class="header__logo">
-                <img src="images/Logo.png" alt="LaslesVPN Logo">
-            </div>
-
-            <button class="header__hamburger" id="hamburger" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-            <div class="header__menu-wrapper" id="nav-menu">
-                <nav class="header__nav">
-                    <ul class="header__menu">
-                        <li class="header__item"><a href="#" class="header__link">About</a></li>
-                        <li class="header__item"><a href="#" class="header__link">Features</a></li>
-                        <li class="header__item"><a href="#" class="header__link">Pricing</a></li>
-                        <li class="header__item"><a href="#" class="header__link">Testimonials</a></li>
-                        <li class="header__item"><a href="#" class="header__link">Help</a></li>
-                    </ul>
-                </nav>
-                <div class="header__auth">
-                    <a href="#" class="header__signin">Sign In</a>
-                    <a href="#" class="btn btn--outline header__signup">Sign Up</a>
-                </div>
-            </div>
+    <header class="navbar">
+        <div class="nav-left">
+            <span class="brand">My Cars</span>
+            <button class="nav-tab active" id="nav-view-btn">My Cars</button>
+            <button class="nav-tab" id="nav-create-btn">Create Car</button>
+        </div>
+        <div class="nav-right" id="nav-search-container">
+            <input type="text" id="search-input" placeholder="Type something...">
+            <button id="search-btn">Search</button>
+            <button id="clear-btn">Clear</button>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="container hero__container">
-                <div class="hero__content">
-                    <h1 class="hero__title">Want anything to be easy with <strong>LaslesVPN.</strong></h1>
-                    <p class="hero__desc">Provide a network for all your needs with ease and fun using <strong>LaslesVPN</strong> discover interesting features from us.</p>
-                    <a href="#" class="btn btn--primary hero__btn">Get Started</a>
+        <section id="view-page" class="page-container">
+            <aside class="sidebar">
+                <h2>Manage cars</h2>
+                
+                <div class="sort-section">
+                    <span class="sort-label">Sort by the highest speed</span>
+                    <label class="switch">
+                        <input type="checkbox" id="sort-toggle">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
-                <div class="hero__image">
-                    <img src="images/Illustration_1.png" alt="User with a laptop ">
+                
+                <hr class="divider">
+                
+                <div class="count-section">
+                    <p class="count-label">Count total speed:</p>
+                    <button id="count-btn">Count</button>
+                    <div class="total-display">
+                        <span>Total speed:</span>
+                        <strong id="total-result">0</strong>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="content">
+                <div id="car-list-container" class="car-grid">
                 </div>
             </div>
         </section>
 
-        <section class="features">
-            <div class="container features__container">
-                <div class="features__image">
-                    <img src="images/Illustration_2.png" alt="User with a laptop">
+        <section id="form-page" class="page-container hidden form-layout">
+            <h1 id="form-title">Create car</h1>
+            
+            <form id="car-form" class="center-form">
+                <input type="hidden" id="car-id">
+                
+                <div class="form-group">
+                    <label for="car-brand">Title</label>
+                    <input type="text" id="car-brand" placeholder="Text..." required>
                 </div>
-                <div class="features__content">
-                    <h2 class="features__title">We Provide Many Features You Can Use</h2>
-                    <p class="features__desc">You can explore the features that we provide with fun and have their own functions each feature.</p>
-                    <ul class="features__list">
-                        <li class="features__item">Powerfull online protection.</li>
-                        <li class="features__item">Internet without borders.</li>
-                        <li class="features__item">Supercharged VPN.</li>
-                        <li class="features__item">No specific time limits.</li>
-                    </ul>
+
+                <div class="form-group">
+                    <label for="car-desc">Description (Year)</label>
+                    <textarea id="car-desc" placeholder="Enter year or details..." required></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label for="car-speed">Max speed (km/h)</label>
+                    <input type="number" id="car-speed" value="0" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="car-type">Car Type</label>
+                    <select id="car-type">
+                        <option value="">Select Type</option>
+                        <option value="sedan">Sedan</option>
+                        <option value="suv">SUV</option>
+                        <option value="hatchback">Hatchback</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submit-btn" class="submit-button">Submit</button>
+            </form>
+
+            <!-- Error Alert -->
+            <div id="error-alert" class="alert-box hidden">
+                <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                <button class="close-alert">&times;</button>
             </div>
         </section>
-
-        <section class="testimonials">
-            <div class="container testimonials__container">
-                <div class="testimonials__header">
-                    <h2 class="testimonials__title">Trusted by Thousands of Happy Customer</h2>
-                    <p class="testimonials__desc">These are the stories of our customers who have joined us with great pleasure when using this crazy feature.</p>
-                </div>
-
-                <div class="testimonials__cards">
-                    <!--first card-->
-                    <div class="card card--active">
-                        <div class="card__header">
-                            <div class="card__user">
-                                <div class="card__avatar">
-                                    <img src="images/Person_1.png" alt="User Avatar">
-                                </div>
-                                <div class="card__info">
-                                    <h4 class="card__name">Viezh Robert</h4>
-                                    <p class="card__location">Warsaw, Poland</p>
-                                </div>
-                            </div>
-                            <div class="card__rating">4.5 
-                                <img src="images/Star.png" alt="Star Icon">
-                            </div>
-                        </div>
-                        <p class="card__text">"Wow... I am very happy to use this VPN, it turned out to be more than my expectations and so far there have been no problems."</p>
-                    </div>
-
-                    <!--second card-->
-                    <div class="card">
-                        <div class="card__header">
-                            <div class="card__user">
-                                <div class="card__avatar">
-                                    <img src="images/Person_2.png" alt="User Avatar">
-                                </div>
-                                <div class="card__info">
-                                    <h4 class="card__name">Yessica Christy</h4>
-                                    <p class="card__location">Warsaw, Poland</p>
-                                </div>
-                            </div>
-                            <div class="card__rating">4.5 
-                                <img src="images/Star.png" alt="Star Icon">
-                            </div>
-                        </div>
-                        <p class="card__text">“I like it because I like to travel far and still can connect with high speed.”</p>
-                    </div>
-
-                    <!--third card-->
-                    <div class="card">
-                        <div class="card__header">
-                            <div class="card__user">
-                                <div class="card__avatar">
-                                    <img src="images/Person_3.png" alt="User Avatar">
-                                </div>
-                                <div class="card__info">
-                                    <h4 class="card__name">Kim Young Jou</h4>
-                                    <p class="card__location">Warsaw, Poland</p>
-                                </div>
-                            </div>
-                            <div class="card__rating">4.5 
-                                <img src="images/Star.png" alt="Star Icon">
-                            </div>
-                        </div>
-                        <p class="card__text">“This is very unusual for my business that currently requires a virtual private network that has high security.”.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!--call to action-->
-        <div class="container">
-            <section class="cta">
-                <div class="cta__content">
-                    <h2 class="cta__title">Subscribe Now for <br> Get Special Features!</h2>
-                    <p class="cta__desc">Let's subscribe with us and find the fun.</p>
-                </div>
-                <div class="cta__action">
-                    <a href="#" class="btn btn--primary cta__btn">Subscribe Now</a>
-                </div>
-            </section>
-         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container footer__container">
-            <div class="footer__copyright">
-                <p> ©2020 LaslesVPN</p>
-            </div>
-                <div class="footer__socials">
-                    <a href="#"><img src="images/Facebook.png" alt="Facebook Icon"></a>
-                    <a href="#"><img src="images/Twitter.png" alt="Twitter Icon"></a>
-                    <a href="#"><img src="images/Instagram.png" alt="Instagram Icon"></a>
-                </div>
-            <div class="footer__logo">
-                <img src="images/Logo.png" alt="LaslesVPN Logo">
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const navMenu = document.getElementById('nav-menu');
-
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('is-active');
-            });
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
