@@ -1,0 +1,16 @@
+.featured-cars {
+  padding: 60px 50px;
+  text-align: center;
+}
+
+.featured-cars h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
