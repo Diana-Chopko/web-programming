@@ -1,8 +1,5 @@
-let cars = [
-    { id: 1, brand: 'Audi A4', year: 2017, speed: 210 },
-    { id: 2, brand: 'Mazda 3', year: 2015, speed: 195 },
-    { id: 3, brand: 'Kia Stonic', year: 2021, speed: 185 },
-];
+const API_URL = 'http://localhost:3000/api/cars';
+let cars = [];
 
 const viewPage = document.getElementById('view-page');
 const formPage = document.getElementById('form-page');
@@ -24,6 +21,50 @@ const formTitle = document.getElementById('form-title');
 const submitBtn = document.getElementById('submit-btn');
 const errorAlert = document.getElementById('error-alert');
 const closeAlertBtn = document.querySelector('.close-alert');
+
+
+async function fetchCars(searchQuery = '', sortOrder = '', isClear = false) {
+    try {
+        let url = new URL(API_URL);
+        if (searchQuery) url.searchParams.append('search', searchQuery);
+        if (sortOrder) url.searchParams.append('sort', sortOrder);
+        if (isClear) url.searchParams.append('clear', 'true');
+
+        const response = await fetch(url);
+        cars = await response.json();
+        renderCars(cars);
+    } catch (error) {
+        console.error("Помилка підключення до сервера:", error);
+        carListContainer.innerHTML = '<p style="padding:20px; color:red;">Не вдалося завантажити дані. Перевірте, чи запущено сервер Node.js.</p>';
+    }
+}
+
+async function createCar(carData) {
+    await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(carData)
+    });
+    handleSearch();
+}
+
+async function updateCar(id, carData) {
+    await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(carData)
+    });
+    handleSearch();
+}
+
+window.removeCar = async function(id) {
+    await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
+    });
+    handleSearch();
+}
+
+fetchCars();
 
 function renderCars(carsToRender) {
     carListContainer.innerHTML = ''; 
@@ -51,48 +92,30 @@ function renderCars(carsToRender) {
     carListContainer.insertAdjacentHTML('beforeend', htmlString);
 }
 
-renderCars(cars);
-
-
 function handleSearch() {
-    const searchText = searchInput.value.toLowerCase();
-    let filteredCars = cars.filter(car => 
-        car.brand.toLowerCase().includes(searchText)
-    );
-    applySortAndRender(filteredCars);
+    const searchText = searchInput.value.toLowerCase().trim();
+    const sortOrder = sortToggle.checked ? 'desc' : 'asc';
+    fetchCars(searchText, sortOrder);
 }
+
 searchBtn.addEventListener('click', handleSearch);
+sortToggle.addEventListener('change', handleSearch);
 
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
-    applySortAndRender(cars);
+    sortToggle.checked = false;
+    fetchCars('', '', true);
 });
 
-
-sortToggle.addEventListener('change', () => {
-    handleSearch(); 
-});
-
-function applySortAndRender(dataArray) {
-    let arrayToRender = [...dataArray];
-    if (sortToggle.checked) {
-        arrayToRender.sort((a, b) => b.speed - a.speed);
+countBtn.addEventListener('click', async () => {
+    try {
+        const response = await fetch(`${API_URL}/total-speed`);
+        const data = await response.json();
+        totalResult.textContent = data.totalSpeed;
+    } catch (error) {
+        console.error("Помилка підрахунку швидкості:", error);
     }
-    else{
-        arrayToRender.sort((a, b) => a.speed - b.speed);
-    }
-    renderCars(arrayToRender);
-}
-
-countBtn.addEventListener('click', () => {
-    const totalSpeed = cars.reduce((acc, car) => acc + Number(car.speed), 0);
-    totalResult.textContent = totalSpeed;
 });
-
-window.removeCar = function(id) {
-    cars = cars.filter(car => car.id !== id);
-    handleSearch(); 
-}
 
 navViewBtn.addEventListener('click', () => {
     viewPage.classList.remove('hidden');
@@ -132,7 +155,7 @@ window.editCar = function(id) {
     document.getElementById('car-speed').value = carToEdit.speed;
 }
 
-carForm.addEventListener('submit', (e) => {
+carForm.addEventListener('submit', async(e) => {
     e.preventDefault();
 
     const idInput = document.getElementById('car-id').value;
@@ -145,21 +168,18 @@ carForm.addEventListener('submit', (e) => {
         return;
     }
 
+    const carData = { brand, year, speed };
+
     if (idInput) {
-        // Update
-        const index = cars.findIndex(car => car.id === parseInt(idInput));
-        cars[index] = { id: parseInt(idInput), brand, year, speed };
+        await updateCar(idInput, carData);
     } else {
-        // Create
-        const newId = cars.length > 0 ? Math.max(...cars.map(c => c.id)) + 1 : 1;
-        cars.push({ id: newId, brand, year, speed });
+        await createCar(carData);
     }
 
     errorAlert.classList.add('hidden');
     navViewBtn.click(); 
 });
 
-// Close Alert
 closeAlertBtn.addEventListener('click', () => {
     errorAlert.classList.add('hidden');
 });
